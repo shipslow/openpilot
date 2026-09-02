@@ -250,7 +250,7 @@ def main(exit_event: threading.Event | None = None) -> None:
     sm.update(0)
     offroad = params.get_bool("IsOffroad")
     network_type = sm['deviceState'].networkType if not force_wifi else NetworkType.wifi
-    if network_type == NetworkType.none:
+    if network_type == NetworkType.none or params.get_bool("DisableUploads"):
       if allow_sleep:
         time.sleep(60 if offroad else 5)
       continue

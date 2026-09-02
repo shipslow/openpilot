@@ -31,6 +31,7 @@ DESCRIPTIONS = {
   'RecordFront': tr_noop("Upload data from the cabin camera and help improve the driver monitoring algorithm."),
   "IsMetric": tr_noop("Display speed in km/h instead of mph."),
   "RecordAudio": tr_noop("Record and store microphone audio while driving. The audio will be included in the dashcam video in comma connect."),
+  "DisableUploads": tr_noop("Keep all driving logs and video on the device. Nothing is uploaded to comma connect; pull logs over SSH instead."),
 }
 
 
@@ -83,6 +84,12 @@ class TogglesLayout(Widget):
         DESCRIPTIONS["RecordAudio"],
         "microphone.png",
         True,
+      ),
+      "DisableUploads": (
+        lambda: tr("Disable Uploads"),
+        DESCRIPTIONS["DisableUploads"],
+        "monitoring.png",
+        False,
       ),
       "IsMetric": (
         lambda: tr("Use Metric System"),

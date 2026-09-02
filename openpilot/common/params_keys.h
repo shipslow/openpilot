@@ -111,6 +111,7 @@ inline static std::unordered_map<std::string, ParamKeyAttributes> keys = {
     {"OpenpilotEnabledToggle", {PERSISTENT, BOOL, "1"}},
     {"PandaHeartbeatLost", {CLEAR_ON_MANAGER_START | CLEAR_ON_OFFROAD_TRANSITION, BOOL}},
     {"PrimeType", {PERSISTENT, INT}},
+    {"DisableUploads", {PERSISTENT, BOOL}},
     {"RecordAudio", {PERSISTENT, BOOL}},
     {"RecordFront", {PERSISTENT, BOOL}},
     {"RecordFrontLock", {PERSISTENT, BOOL}},  // for the internal fleet
