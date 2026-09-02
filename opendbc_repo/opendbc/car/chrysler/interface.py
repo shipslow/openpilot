@@ -98,6 +98,10 @@ class CarInterface(CarInterfaceBase):
       if any(fw.ecu == 'eps' and fw.fwVersion in (b"68273275AF", b"68273275AG", b"68312176AE", b"68312176AG",) for fw in car_fw):
         stock_cp.minEnableSpeed = 0.
 
+    if candidate in CUSW_CARS:
+      # CUSW: LKAS fault on disengage is mitigated by the torque ramp-down in carcontroller (commaai/opendbc#3233)
+      stock_cp.dashcamOnly = False
+
     if candidate == CAR.RAM_HD_5TH_GEN:
       stock_cp.dashcamOnly = False
       # https://github.com/commaai/openpilot/issues/25389
