@@ -81,9 +81,12 @@ static bool chrysler_cusw_tx_hook(const CANPacket_t *msg) {
   if (msg->addr == 0x2FAU) {
     // Signal: CRUISE_BUTTONS.ACC_Cancel
     // Signal: CRUISE_BUTTONS.ACC_Resume
+    // Signal: CRUISE_BUTTONS.ACC_Accel / ACC_Decel (sunnypilot ICBM adjusts the stock ACC set speed)
     const bool is_cancel = GET_BIT(msg, 0U);
+    const bool is_accel = GET_BIT(msg, 2U);
+    const bool is_decel = GET_BIT(msg, 3U);
     const bool is_resume = GET_BIT(msg, 4U);
-    const bool allowed = is_cancel || (is_resume && controls_allowed);
+    const bool allowed = is_cancel || ((is_resume || is_accel || is_decel) && controls_allowed);
     if (!allowed) {
       tx = false;
     }
