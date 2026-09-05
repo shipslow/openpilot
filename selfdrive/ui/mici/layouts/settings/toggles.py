@@ -21,6 +21,8 @@ class TogglesLayoutMici(NavScroller):
     record_front = BigParamControl("record & upload driver camera", "RecordFront", toggle_callback=restart_needed_callback)
     record_mic = BigParamControl("record & upload mic audio", "RecordAudio", toggle_callback=restart_needed_callback)
     uploads = BigParamControl("upload drives to comma", "OnroadUploads", toggle_callback=restart_needed_callback)
+    mads = BigParamControl("MADS: steer without ACC", "Mads", toggle_callback=restart_needed_callback)
+    icbm = BigParamControl("cruise speed management (ICBM)", "IntelligentCruiseButtonManagement", toggle_callback=restart_needed_callback)
     enable_openpilot = BigParamControl("enable sunnypilot", "OpenpilotEnabledToggle", toggle_callback=restart_needed_callback)
 
     self._scroller.add_widgets([
@@ -32,6 +34,8 @@ class TogglesLayoutMici(NavScroller):
       record_front,
       record_mic,
       uploads,
+      mads,
+      icbm,
       enable_openpilot,
     ])
 
@@ -44,6 +48,8 @@ class TogglesLayoutMici(NavScroller):
       ("RecordFront", record_front),
       ("RecordAudio", record_mic),
       ("OnroadUploads", uploads),
+      ("Mads", mads),
+      ("IntelligentCruiseButtonManagement", icbm),
       ("OpenpilotEnabledToggle", enable_openpilot),
     )
 
