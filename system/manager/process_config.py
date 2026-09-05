@@ -95,8 +95,10 @@ def mapd_ready(started: bool, params: Params, CP: car.CarParams) -> bool:
   return bool(os.path.exists(Paths.mapd_root()))
 
 def uploader_ready(started: bool, params: Params, CP: car.CarParams) -> bool:
+  # KL bring-up: OnroadUploads off means no uploads at all, not "only while parked".
+  # Logs stay on the device and are pulled over SSH.
   if not params.get_bool("OnroadUploads"):
-    return only_offroad(started, params, CP)
+    return False
 
   return always_run(started, params, CP)
 
