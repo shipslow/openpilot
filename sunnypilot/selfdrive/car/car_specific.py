@@ -8,7 +8,7 @@ See the LICENSE.md file in the root directory for more details.
 from cereal import log, custom
 from opendbc.car import structs
 
-from opendbc.car.chrysler.values import RAM_DT
+from opendbc.car.chrysler.values import CUSW_CARS, RAM_DT
 from openpilot.selfdrive.selfdrived.events import Events
 from openpilot.sunnypilot.selfdrive.selfdrived.events import EventsSP
 
@@ -39,6 +39,11 @@ class CarSpecificEventsSP:
           self.low_speed_alert = False
         if self.CP.minEnableSpeed >= 14.5 and CS.gearShifter != GearShifter.drive:
           self.low_speed_alert = True
+      elif self.CP.carFingerprint in CUSW_CARS:
+        # The EPS enforces its own floor and the cluster's lane-keep icon already shows it. With MADS the
+        # banner (and its chime) would otherwise sit over the path view for every in-town stretch of a drive.
+        if events.has(EventName.belowSteerSpeed):
+          events.remove(EventName.belowSteerSpeed)
       if self.low_speed_alert:
         events.add(EventName.belowSteerSpeed)
 
