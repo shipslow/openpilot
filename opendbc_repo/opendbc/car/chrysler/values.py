@@ -69,7 +69,7 @@ class CAR(Platforms):
   # Jeep
   JEEP_CHEROKEE_5TH_GEN = ChryslerPlatformConfig(
     [ChryslerCarDocs("Jeep Cherokee 2019-23")],
-    ChryslerCarSpecs(mass=1747., wheelbase=2.70, steerRatio=17.0, minSteerSpeed=17.3),
+    ChryslerCarSpecs(mass=1747., wheelbase=2.70, steerRatio=17.0, minSteerSpeed=15.9),  # 35.6 mph; hold to 34.2 (0.6 m/s band in carcontroller), both measured on a 2015
     {Bus.pt: 'chrysler_cusw'},
   )
   JEEP_GRAND_CHEROKEE = ChryslerPlatformConfig(  # includes 2017 Trailhawk

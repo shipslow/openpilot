@@ -2,7 +2,7 @@ from opendbc.can import CANPacker
 from opendbc.car import Bus, DT_CTRL
 from opendbc.car.lateral import apply_meas_steer_torque_limits
 from opendbc.car.chrysler import chryslercan
-from opendbc.car.chrysler.values import CUSW_CARS, RAM_CARS, CarControllerParams, ChryslerFlags, RAM_DT
+from opendbc.car.chrysler.values import CAR, CUSW_CARS, RAM_CARS, CarControllerParams, ChryslerFlags, RAM_DT
 from opendbc.car.interfaces import CarControllerBase
 
 from opendbc.sunnypilot.car.chrysler.carcontroller_ext import CarControllerExt
@@ -70,7 +70,11 @@ class CarController(CarControllerBase, MadsCarController, CarControllerExt, Inte
         if CS.out.vEgo < (self.CP.minSteerSpeed - 0.5):
           lkas_control_bit = False
       elif self.CP.carFingerprint in CUSW_CARS:
-        if CS.out.vEgo < (self.CP.minSteerSpeed - 2.0):
+        # 2015 KL, measured: the factory camera holds lane-keep to 34.2 mph and re-engages at 35.5,
+        # and the EPS faults the instant the control bit is raised below its floor (20 mph did).
+        # So a narrow band at the measured numbers; other CUSW keep the port's 2.0 m/s guess.
+        hyst = 0.6 if self.CP.carFingerprint == CAR.JEEP_CHEROKEE_5TH_GEN else 2.0
+        if CS.out.vEgo < (self.CP.minSteerSpeed - hyst):
           lkas_control_bit = False
 
       # EPS faults if LKAS re-enables too quickly
