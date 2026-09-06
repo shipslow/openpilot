@@ -32,6 +32,14 @@ class TestChryslerCuswSafety(common.CarSafetyTest, common.MotorTorqueSteeringSaf
     values = {"ACC_ACTIVE": 1 if enable else 0}
     return self.packer.make_can_msg_safety("ACC_CONTROL", 0, values)
 
+  def _acc_state_msg(self, enable):
+    values = {"ACC_MAIN_ON": 1 if enable else 0}
+    return self.packer.make_can_msg_safety("ACC_CONTROL", 0, values)
+
+  def _lkas_button_msg(self, enabled):
+    # no decoded LKAS/LaneSense button on CUSW yet; MADS engages from the ACC main switch
+    raise NotImplementedError
+
   def _speed_msg(self, speed):
     values = {"VEHICLE_SPEED": speed}
     return self.packer.make_can_msg_safety("BRAKE_1", 0, values)

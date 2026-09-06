@@ -39,6 +39,8 @@ static void chrysler_cusw_rx_hook(const CANPacket_t *msg) {
       // Signal: ACC_CONTROL.ACC_ACTIVE
       bool cruise_engaged = GET_BIT(msg, 7U);
       pcm_cruise_check(cruise_engaged);
+      // Signal: ACC_CONTROL.ACC_MAIN_ON (MADS: lateral allowed while the ACC main switch is on)
+      acc_main_on = GET_BIT(msg, 6U);
     }
 
     if (msg->addr == 0x1E4U) {
