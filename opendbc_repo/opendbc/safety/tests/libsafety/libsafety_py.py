@@ -85,6 +85,8 @@ void set_torque_driver(int min, int max);
 int get_torque_driver_min(void);
 int get_torque_driver_max(void);
 void set_desired_torque_last(int t);
+void set_chrysler_cusw_torque_last(int t);
+int get_chrysler_cusw_torque_last(void);
 void set_rt_torque_last(int t);
 void set_desired_angle_last(int t);
 int get_desired_angle_last();

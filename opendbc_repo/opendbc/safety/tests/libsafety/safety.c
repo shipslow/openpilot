@@ -160,6 +160,14 @@ void set_rt_torque_last(int t){
   rt_torque_last = t;
 }
 
+void set_chrysler_cusw_torque_last(int t){
+  chrysler_cusw_torque_last = t;
+}
+
+int get_chrysler_cusw_torque_last(void){
+  return chrysler_cusw_torque_last;
+}
+
 void set_desired_torque_last(int t){
   desired_torque_last = t;
 }
