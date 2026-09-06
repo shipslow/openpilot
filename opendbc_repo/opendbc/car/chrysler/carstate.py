@@ -159,6 +159,8 @@ class CarState(CarStateBase, MadsCarState, CarStateExt):
       ret.rightBlindspot = bool(cp.vl["BSM_RIGHT"]["RIGHT_DETECTED"])
 
     self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
+    # ICBM and cancel stamp their CRUISE_BUTTONS with the stock counter; the CUSW path never read it
+    self.button_counter = cp.vl["CRUISE_BUTTONS"]["COUNTER"]
 
     return ret, ret_sp
 
