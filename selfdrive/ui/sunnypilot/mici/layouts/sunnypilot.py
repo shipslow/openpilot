@@ -52,7 +52,7 @@ class SunnypilotLayoutMici(NavScroller):
                                               [35, 45, 55], ["35 mph", "45 mph", "55 mph"])
     self._sla_mode = BigMultiParamToggle("speed limit", "SpeedLimitMode", ["off", "info", "warning", "assist"])
     self._sla_offset = BigValueParamToggle("speed limit offset", "SpeedLimitValueOffset",
-                                           [0, 5, 10], ["+0 mph", "+5 mph", "+10 mph"])
+                                           [0, 5, 8], ["+0 mph", "+5 mph", "+8 mph"])
     self._road_name = BigParamControl("show road name", "RoadNameToggle")
     self._dev_ui = BigMultiParamToggle("developer ui", "DevUIInfo", ["off", "bottom", "right", "right & bottom"])
     self._rainbow = BigParamControl("rainbow path", "RainbowMode")
