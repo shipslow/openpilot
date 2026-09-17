@@ -1428,9 +1428,15 @@ bool SpectraCamera::handle_camera_event(const cam_req_mgr_message *event_data) {
   if (!waitForFrameReady(request_id)) {
     // Reset queue on sync failure to prevent frame tearing
     LOGE("camera %d sync failure %ld %ld ", cc.camera_num, request_id, frame_id_raw);
-    clearAndRequeue(request_id + 1);
+    static const int restart_after = std::stoi(util::getenv("SPECTRA_SENSOR_RESTART_AFTER", "12"));
+    if (++consecutive_sync_failures >= restart_after) {
+      restartSensorStream(request_id + 1);
+    } else {
+      clearAndRequeue(request_id + 1);
+    }
     return false;
   }
+  consecutive_sync_failures = 0;
 
   int buf_idx = request_id % ife_buf_depth;
   bool ret = processFrame(buf_idx, request_id, frame_id_raw, timestamp);
@@ -1478,6 +1484,18 @@ void SpectraCamera::clearAndRequeue(uint64_t from_request_id) {
     enqueue_frame(id);
   }
   skip_expected = true;
+}
+
+void SpectraCamera::restartSensorStream(uint64_t from_request_id) {
+  // The IFE hasn't completed a single frame for seconds. Seen on the comma four when the CSID logs
+  // UNBOUNDED_FRAME as the sensor starts streaming: the ISP context then never generates buf_done
+  // and every request times out until camerad is restarted. Cycling the sensor's streaming bit
+  // gives the CSID a clean frame start to lock onto.
+  LOGE("camera %d: %d sync failures in a row, restarting sensor stream", cc.camera_num, consecutive_sync_failures);
+  consecutive_sync_failures = 0;
+  sensors_i2c(sensor->stop_reg_array.data(), sensor->stop_reg_array.size(), CAM_SENSOR_PACKET_OPCODE_SENSOR_CONFIG, sensor->data_word);
+  clearAndRequeue(from_request_id);
+  sensors_start();
 }
 
 bool SpectraCamera::waitForFrameReady(uint64_t request_id) {

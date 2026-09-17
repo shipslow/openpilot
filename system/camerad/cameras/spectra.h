@@ -209,6 +209,7 @@ public:
   uint64_t last_requeue_ts = 0;
   uint64_t frame_id_raw_last = 0;
   int invalid_request_count = 0;
+  int consecutive_sync_failures = 0;
   bool skip_expected = true;
 
   CameraBuf buf;
@@ -216,6 +217,7 @@ public:
 
 private:
   void clearAndRequeue(uint64_t from_request_id);
+  void restartSensorStream(uint64_t from_request_id);
   bool validateEvent(uint64_t request_id, uint64_t frame_id_raw);
   bool waitForFrameReady(uint64_t request_id);
   bool processFrame(int buf_idx, uint64_t request_id, uint64_t frame_id_raw, uint64_t timestamp);
