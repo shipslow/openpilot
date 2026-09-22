@@ -31,7 +31,10 @@ static void chrysler_cusw_rx_hook(const CANPacket_t *msg) {
   if (msg->bus == 0U) {
     if (msg->addr == 0x1ECU) {
       // Signal: EPS_STATUS.TORQUE_MOTOR
-      int torque_meas_new = ((msg->data[3] & 0xFU) << 8) + msg->data[4] - 2048U;
+      // Zero is 2002, not 2048: a 2015 KL reads -46 with no command and hands off on every drive
+      // (-41..-51 across 24 routes), and tracks commanded torque minus 46 when engaged. With 2048 the
+      // bias used up most of max_torque_error for positive (right-turn) torque and throttled the ramp.
+      int torque_meas_new = ((msg->data[3] & 0xFU) << 8) + msg->data[4] - 2002;
       update_sample(&torque_meas, torque_meas_new);
     }
 
